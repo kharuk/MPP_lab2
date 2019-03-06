@@ -1,7 +1,15 @@
 version: '3.3'
 services:
-  web:
-    build: .
+
+  front:
+    build: ./app
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - server
+          
+  server:
+    build: ./server
     ports:
       - "8080:8080"
     depends_on: 
@@ -13,7 +21,7 @@ services:
     environment:
       MYSQL_DATABASE: 'cinema_db'
       MYSQL_USER: 'root'
-      MYSQL_PASSWORD: '6852922'
+      MYSQL_ROOT_PASSWORD: 'root'
     volumes:
       - ./mysql
 

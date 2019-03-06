@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 const connection = new Sequelize('cinema_db', 'root', '6852922', {
-  host: 'localhost',
+  host: 'db',
   dialect: 'mysql',
   operatorsAliases: false,
 
