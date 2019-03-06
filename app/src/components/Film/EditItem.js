@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link} from 'react-router-dom';
+import { Link, Redirect} from 'react-router-dom';
 import { ValidationForm, TextInput} from "react-bootstrap4-form-validation"; 
 
 export default class EditItem extends Component {
   state = {
     film_name: '',
     film_description: '',
-    film_director:''
+    film_director:'',
+    isRedirect: false
   }
 
   componentDidMount() {
@@ -33,6 +34,14 @@ export default class EditItem extends Component {
     };
     axios.put('http://localhost:8080/films/edit/'+this.props.match.params.id, obj)
         .then(res => console.log(res.data))
+        .then(()=> {
+          this.setState({ 
+            isRedirect: true
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+      })
   }
 
   onChangeName = (e) => {
@@ -54,6 +63,11 @@ export default class EditItem extends Component {
   }
 
   render() {
+
+    if (this.state.isRedirect) {
+      return <Redirect to={'/sessions/'}/>
+    }
+
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>

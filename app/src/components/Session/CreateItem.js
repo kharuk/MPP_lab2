@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect} from 'react-router-dom';
 import axios from 'axios';
 import { ValidationForm, TextInput, SelectGroup} from "react-bootstrap4-form-validation";
 
@@ -9,7 +9,8 @@ class CreateItem extends Component {
     session_films: [],
     session_cinemas: [],
     session_film_id: 0,
-    session_cinema_id: 0
+    session_cinema_id: 0,
+    isRedirect: false
   }
 
   componentDidMount() {
@@ -34,15 +35,19 @@ class CreateItem extends Component {
     };
     console.log(obj);
     axios.post('http://localhost:8080/sessions/new', obj)
-        .then(res => console.log(res.data));
+        .then(res => console.log(res.data))
+        .then(()=> {
+          this.setState({
+            session_date: '',
+            session_films: [],
+            session_cinemas:[],
+            session_film_id: 0,
+            session_cinema_id: 0,
+            isRedirect: true
+          })
+        });
 
-    this.setState({
-      session_date: '',
-      session_films: [],
-      session_cinemas:[],
-      session_film_id: 0,
-      session_cinema_id: 0
-    })
+
   }
 
   onChangeDate = (e) => {
@@ -64,6 +69,11 @@ class CreateItem extends Component {
   }
 
   render() {
+
+    if (this.state.isRedirect) {
+      return <Redirect to={'/sessions/'}/>
+    }
+
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>

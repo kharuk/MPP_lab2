@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { ValidationForm, TextInput} from "react-bootstrap4-form-validation"; 
 
@@ -7,7 +7,8 @@ class CreateItem extends Component {
   state = {
     cinema_name: '',
     cinema_phone: '',
-    cinema_address:''
+    cinema_address:'',
+    isRedirect: false
   }
 
   componentDidMount() {
@@ -33,6 +34,14 @@ class CreateItem extends Component {
     };
     axios.put('http://localhost:8080/cinemas/edit/'+this.props.match.params.id, obj)
         .then(res => console.log(res.data))
+        .then(()=> {
+          this.setState({ 
+            isRedirect: true
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+      })
     }
   
 
@@ -56,6 +65,11 @@ class CreateItem extends Component {
     }
 
   render() {
+
+    if (this.state.isRedirect) {
+      return <Redirect to={'/cinemas/'}/>
+    }
+
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>

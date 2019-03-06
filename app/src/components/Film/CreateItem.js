@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { ValidationForm, TextInput} from "react-bootstrap4-form-validation"; 
 
@@ -7,7 +7,8 @@ class CreateItem extends Component {
   state = {
     film_name: '',
     film_description: '',
-    film_director:''
+    film_director:'',
+    isRedirect: false
   }
   onSubmit = (e) => {
     e.preventDefault();
@@ -17,13 +18,17 @@ class CreateItem extends Component {
       director: this.state.film_director
     };
     axios.post('http://localhost:8080/films/new', obj)
-        .then(res => console.log(res.data));
+        .then(res => console.log(res.data))
+        .then(()=> {
+          this.setState({
+            film_name: '',
+            film_description: '',
+            film_director:'',
+            isRedirect: true
+          })
+        })
 
-    this.setState({
-      film_name: '',
-      film_description: '',
-      film_director:''
-    })
+    
   }
 
   onChangeName = (e) => {
@@ -45,6 +50,10 @@ class CreateItem extends Component {
   }
 
   render() {
+
+    if (this.state.isRedirect) {
+      return <Redirect to={'/films/'}/>
+    }
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>

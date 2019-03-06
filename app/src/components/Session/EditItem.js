@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link} from 'react-router-dom';
+import { Link, Redirect} from 'react-router-dom';
 import { ValidationForm, TextInput, SelectGroup} from "react-bootstrap4-form-validation";
 
 export default class EditItem extends Component {
@@ -10,7 +10,8 @@ export default class EditItem extends Component {
     session_films: [],
     session_cinemas: [],
     session_film_id: 0,
-    session_cinema_id: 0
+    session_cinema_id: 0,
+    isRedirect: false
   }
 
   componentDidMount() {
@@ -38,6 +39,14 @@ export default class EditItem extends Component {
     };
     axios.put('http://localhost:8080/sessions/edit/'+this.props.match.params.id, obj)
         .then(res => console.log(res.data))
+        .then(()=> {
+          this.setState({ 
+            isRedirect: true
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+      })
   }
 
   onChangeDate = (e) => {
@@ -59,6 +68,11 @@ export default class EditItem extends Component {
   }
 
   render() {
+
+    if (this.state.isRedirect) {
+      return <Redirect to={'/films/'}/>
+    }
+    
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>

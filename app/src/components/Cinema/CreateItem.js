@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { ValidationForm, TextInput} from "react-bootstrap4-form-validation"; 
 
 class CreateItem extends Component {
 
-  constructor() {
-    super();
-    this.form = React.createRef();
-  }
-
   state = {
     cinema_name: '',
     cinema_phone: '',
-    cinema_address:''
+    cinema_address:'',
+    isRedirect: false
   }
   onSubmit = (e) => {
     e.preventDefault();
@@ -24,13 +20,17 @@ class CreateItem extends Component {
       address: this.state.cinema_address
     };
     axios.post('http://localhost:8080/cinemas/new', obj)
-        .then(res => console.log(res.data));
+        .then(res => console.log(res.data))
+        .then( () => {
+          this.setState({
+            cinema_name: '',
+            cinema_phone: '',
+            cinema_address:'',
+            isRedirect: true
+          })
+        });
 
-    this.setState({
-      cinema_name: '',
-      cinema_phone: '',
-      cinema_address:''
-    })
+
   //}
   }
 
@@ -53,6 +53,11 @@ class CreateItem extends Component {
   }
 
   render() {
+
+    if (this.state.isRedirect) {
+      return <Redirect to={'/cinemas/'}/>
+    }
+
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>
