@@ -1,0 +1,21 @@
+version: '3.3'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on: 
+      - db
+      
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'cinema_db'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: '6852922'
+    volumes:
+      - ./mysql
+
+volumes:
+  my-db:
