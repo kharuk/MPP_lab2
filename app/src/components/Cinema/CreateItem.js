@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { ValidationForm, TextInput} from "react-bootstrap4-form-validation"; 
 
 class CreateItem extends Component {
+
+  constructor() {
+    super();
+    this.form = React.createRef();
+  }
+
   state = {
     cinema_name: '',
     cinema_phone: '',
@@ -10,6 +17,7 @@ class CreateItem extends Component {
   }
   onSubmit = (e) => {
     e.preventDefault();
+
     const obj = {
       name: this.state.cinema_name,
       phone: this.state.cinema_phone,
@@ -23,6 +31,7 @@ class CreateItem extends Component {
       cinema_phone: '',
       cinema_address:''
     })
+  //}
   }
 
   onChangeName = (e) => {
@@ -47,11 +56,11 @@ class CreateItem extends Component {
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>
-        <form onSubmit={this.onSubmit} autoComplete="off" className="needs-validation" noValidate>
+        <ValidationForm onSubmit={this.onSubmit} ref={this.form} autoComplete="off" className="needs-validation" noValidate>
           <div>
             <div className="form-group col-md-6">
               <label>Name</label>
-              <input 
+              <TextInput 
                 type="text" 
                 className="form-control" 
                 name="name" 
@@ -60,14 +69,12 @@ class CreateItem extends Component {
                 value={this.state.cinema_name} 
                 onChange={this.onChangeName}
                 required
+                successMessage="Looks good!"
               />
-              <div className="valid-feedback">
-                Looks good!
-              </div>
           </div>
           <div className="form-group col-md-6">
-            <label>Phone</label>
-            <input 
+            <label>Phone (7 digit)</label>
+            <TextInput 
                 type="tel" 
                 pattern="^\d{7}$" 
                 className="form-control" 
@@ -76,14 +83,12 @@ class CreateItem extends Component {
                 value={this.state.cinema_phone}
                 onChange={this.onChangePhone} 
                 required
-            />
-            <div className="invalid-feedback">  
-                Please enter 7 digit mobile number.  
-            </div>   
+                errorMessage="Please enter 7 digit mobile number."
+            /> 
         </div>
         <div className="form-group col-md-6">
             <label>Address</label>
-            <input 
+            <TextInput 
                 type="text" 
                 className="form-control" 
                 name="address" 
@@ -92,17 +97,15 @@ class CreateItem extends Component {
                 value={this.state.cinema_address}
                 onChange={this.onChangeAddress}
                 required
+                errorMessage="Please write an address."
             />
-            <div className="invalid-feedback">
-              Please write an address.
-            </div>  
           </div>
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-info"> Submit</button>
           <Link className="btn btn-secondary" to="/cinemas">Back</Link>
         </div>
-      </form>
+      </ValidationForm>
     </section>
     );
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link} from 'react-router-dom';
+import { ValidationForm, TextInput} from "react-bootstrap4-form-validation"; 
 
 export default class EditItem extends Component {
   state = {
@@ -56,11 +57,11 @@ export default class EditItem extends Component {
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>
-        <form onSubmit={this.onSubmit} autoComplete="off" className="needs-validation" noValidate>
+        <ValidationForm onSubmit={this.onSubmit} autoComplete="off" className="needs-validation" noValidate>
         <div>
           <div className="form-group col-md-6">
             <label>Name</label>
-            <input 
+            <TextInput 
               type="text" 
               className="form-control" 
               name="name" 
@@ -69,31 +70,27 @@ export default class EditItem extends Component {
               maxLength="20" 
               required
               onChange={this.onChangeName}
+              successMessage="Looks good!"
             />
-            <div className="valid-feedback">
-                Looks good!
-            </div>
           </div>
           <div className="form-group col-md-6">
             <label>Description</label>
-            <textarea 
+            <TextInput 
               rows='3' 
               type="text" 
               className="form-control" 
               name="description" 
               placeholder="description" 
               required
+              multiline
               onChange={this.onChangeDescription} 
               value={this.state.film_description}
-            />
-         
-            <div className="invalid-feedback">
-                Please write a description.
-            </div>      
+              errorMessage="Please write a description."
+            />  
           </div>
           <div className="form-group col-md-6">
             <label>Director</label>
-            <input 
+            <TextInput 
               type="text" 
               className="form-control" 
               name="director" 
@@ -102,17 +99,15 @@ export default class EditItem extends Component {
               value={this.state.film_director} 
               required
               onChange={this.onChangeDirector}
+              errorMessage="Please write a director."
             />
-            <div className="invalid-feedback">
-                Please write a director.
-            </div>   
           </div>
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-info"> Submit</button>
           <Link className="btn btn-secondary" to="/films">Back</Link>
         </div>
-      </form>
+      </ValidationForm>
     </section>
     );
   }

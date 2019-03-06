@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { ValidationForm, TextInput, SelectGroup} from "react-bootstrap4-form-validation";
 
 class CreateItem extends Component {
   state = {
@@ -66,51 +67,49 @@ class CreateItem extends Component {
     return (
       <section className="container container__margin" >
         <h3>{this.props.header}</h3>
-        <form onSubmit={this.onSubmit} autoComplete="off" className="needs-validation" noValidate>
+        <ValidationForm onSubmit={this.onSubmit} autoComplete="off" className="needs-validation" noValidate>
         <div>
           <div className="form-group col-md-6">
             <label htmlFor="select1">Film select</label>
-            <select 
+            <SelectGroup
               name="Film_Id"  
               className="form-control" 
               id="select1" 
               value={this.state.session_film_id} 
               required
               onChange={this.onChangeFilm}
+              errorMessage=" Please choose film."
             >
+            <option value="">-- Select Film --</option>
             {
               this.state.session_films.map(function(item, i){
                 return <option key={i} value={item.id}>{item.name}</option>;
             })
             }
-            </select>
-            <div className="invalid-feedback">
-              Please choose film
-            </div>  
+            </SelectGroup> 
           </div>
           <div className="form-group col-md-6">
             <label htmlFor="select2">Cinema select</label>
-            <select 
+            <SelectGroup
               name="Cinema_Id" 
               className="form-control" 
               id="select2" 
               value={this.state.session_cinema_id} 
               required
               onChange={this.onChangeCinema}
+              errorMessage="Please choose cinema."
             >
+            <option value="">-- Select Cinema --</option>
             {
               this.state.session_cinemas.map(function(item, i){
                 return <option key={i} value={item.id}>{item.name}</option>;
             })
             }
-            </select>
-            <div className="invalid-feedback">
-              Please choose cinema
-            </div>  
+            </SelectGroup>
           </div>
           <div className="form-group col-md-6">
             <label>Date</label>
-            <input 
+            <TextInput
               type="date" 
               className="form-control" 
               name="date" 
@@ -119,17 +118,15 @@ class CreateItem extends Component {
               value={this.state.session_date} 
               required
               onChange={this.onChangeDate}
-            />
-            <div className="invalid-feedback">
-              Please input date
-            </div>   
+              errorMessage="Please input date."
+            /> 
           </div>
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-info"> Submit</button>
           <Link className="btn btn-secondary" to="/sessions">Back</Link>
         </div>
-      </form>
+      </ValidationForm>
     </section>
     );
   }
