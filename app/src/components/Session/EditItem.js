@@ -70,7 +70,7 @@ export default class EditItem extends Component {
   render() {
 
     if (this.state.isRedirect) {
-      return <Redirect to={'/films/'}/>
+      return <Redirect to={'/sessionss/'}/>
     }
     
     return (

@@ -26,7 +26,7 @@ class Table extends Component {
 
   
     if (this.state.isRedirect) {
-      return <Redirect to={this.props.path}/>
+      return <Redirect to={`/${this.props.path}/`}/>
     }
 
     return (
